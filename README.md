@@ -82,6 +82,71 @@ for await (const ev of client.chatStream({
 - `optimization*` helpers, including policy/report/evaluate/replay/test suites/regression schedules
 - `settings*` helpers, including provider keys, privacy, and copilot state/ask endpoints
 
+## Additional API Helper Examples
+
+### Dashboard/API Health Check (Read-only)
+
+```ts
+import { LLMWise } from "llmwise";
+
+const client = new LLMWise("mm_sk_...");
+
+const models = await client.models();
+const balance = await client.creditsBalance();
+const usage = await client.usageSummary({ days: 7 });
+const conversations = await client.conversations({ limit: 5 });
+
+console.log({ models: models.length, balance, usage, conversations_count: (conversations as any)?.total || 0 });
+```
+
+### Conversation Lifecycle
+
+```ts
+import { LLMWise } from "llmwise";
+
+const client = new LLMWise("mm_sk_...");
+
+const { id } = await client.createConversation();
+await client.updateConversation(id, { title: "API smoke room" });
+const list = await client.conversations({ limit: 10 });
+await client.deleteConversation(id);
+
+console.log("recent_conversations:", (list as any)?.total ?? 0);
+```
+
+### Credits & Cost
+
+```ts
+import { LLMWise } from "llmwise";
+
+const client = new LLMWise("mm_sk_...");
+
+const wallet = await client.creditsWallet();
+const usageRecent = await client.usageRecent({ days: 7, limit: 5 });
+const packs = await client.creditsPacks();
+
+console.log({ wallet, usageRecent, packs_count: (packs as any[])?.length });
+```
+
+### Settings and Optimization
+
+```ts
+import { LLMWise } from "llmwise";
+
+const client = new LLMWise("mm_sk_...");
+
+const policy = await client.optimizationPolicy();
+const report = await client.optimizationReport({ days: 1, goal: "balanced" });
+
+console.log({ policy, report });
+```
+
+## Smoke Script
+
+```bash
+LLMWISE_API_KEY=mm_sk_... npm run smoke
+```
+
 ## Configure
 
 - Default base URL: `https://llmwise.ai/api/v1`
