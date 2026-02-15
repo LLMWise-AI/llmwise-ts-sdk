@@ -62,7 +62,7 @@ export class LLMWise {
     }
     const query = search.toString();
     if (!query) return path;
-    return `${path.includes("?") ? "&" : "?"}${query}`;
+    return `${path}${path.includes("?") ? "&" : "?"}${query}`;
   }
 
   private async getJSON<T>(path: string, args?: { params?: QueryParams; signal?: AbortSignal }): Promise<T> {
