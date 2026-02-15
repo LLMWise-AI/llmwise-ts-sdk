@@ -2,10 +2,13 @@ import { LLMWiseError } from "./errors.js";
 import { authHeaders, normalizeApiBase } from "./util.js";
 import type {
   BlendRequest,
+  BlendResponse,
   ChatRequest,
   ChatResponse,
   CompareRequest,
+  CompareResponse,
   JudgeRequest,
+  JudgeResponse,
   StreamEvent,
 } from "./types.js";
 import { streamSSEJSON } from "./sse.js";
@@ -97,9 +100,9 @@ export class LLMWise {
     }
   }
 
-  async compare(req: Omit<CompareRequest, "stream"> & { signal?: AbortSignal }): Promise<Record<string, unknown>> {
+  async compare(req: Omit<CompareRequest, "stream"> & { signal?: AbortSignal }): Promise<CompareResponse> {
     const { signal, ...payload } = req;
-    return await this.postJSON("/compare", { ...payload, stream: false }, signal);
+    return await this.postJSON<CompareResponse>("/compare", { ...payload, stream: false }, signal);
   }
 
   async *compareStream(req: Omit<CompareRequest, "stream"> & { signal?: AbortSignal }): AsyncGenerator<StreamEvent> {
@@ -120,9 +123,9 @@ export class LLMWise {
     }
   }
 
-  async blend(req: Omit<BlendRequest, "stream"> & { signal?: AbortSignal }): Promise<Record<string, unknown>> {
+  async blend(req: Omit<BlendRequest, "stream"> & { signal?: AbortSignal }): Promise<BlendResponse> {
     const { signal, ...payload } = req;
-    return await this.postJSON("/blend", { ...payload, stream: false }, signal);
+    return await this.postJSON<BlendResponse>("/blend", { ...payload, stream: false }, signal);
   }
 
   async *blendStream(req: Omit<BlendRequest, "stream"> & { signal?: AbortSignal }): AsyncGenerator<StreamEvent> {
@@ -143,9 +146,9 @@ export class LLMWise {
     }
   }
 
-  async judge(req: Omit<JudgeRequest, "stream"> & { signal?: AbortSignal }): Promise<Record<string, unknown>> {
+  async judge(req: Omit<JudgeRequest, "stream"> & { signal?: AbortSignal }): Promise<JudgeResponse> {
     const { signal, ...payload } = req;
-    return await this.postJSON("/judge", { ...payload, stream: false }, signal);
+    return await this.postJSON<JudgeResponse>("/judge", { ...payload, stream: false }, signal);
   }
 
   async *judgeStream(req: Omit<JudgeRequest, "stream"> & { signal?: AbortSignal }): AsyncGenerator<StreamEvent> {
@@ -198,4 +201,3 @@ export class LLMWise {
     return (await res.json()) as Record<string, unknown>;
   }
 }
-

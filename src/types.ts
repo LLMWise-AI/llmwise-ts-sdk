@@ -44,6 +44,27 @@ export type CompareRequest = {
   conversation_id?: string;
 };
 
+export type CompareResponseItem = {
+  model: string;
+  content?: string;
+  latency_ms?: number;
+  completion_tokens?: number;
+  cost?: number;
+  [key: string]: unknown;
+};
+
+export type CompareResponse = {
+  id: string;
+  responses: CompareResponseItem[];
+  summary?: { fastest?: string; longest?: string; [key: string]: unknown };
+  credits_charged?: number;
+  credits_remaining?: number;
+  conversation_id?: string;
+  semantic_memory_used?: boolean;
+  semantic_memory_hits?: number;
+  [key: string]: unknown;
+};
+
 export type BlendRequest = {
   models: string[];
   messages: Message[];
@@ -60,6 +81,23 @@ export type BlendRequest = {
   conversation_id?: string;
 };
 
+export type BlendResponse = {
+  id: string;
+  content: string;
+  strategy?: string;
+  source_models?: string[];
+  synthesizer?: string;
+  latency_ms?: number;
+  credits_charged?: number;
+  credits_remaining?: number;
+  candidates?: number | null;
+  layers?: number | null;
+  conversation_id?: string;
+  semantic_memory_used?: boolean;
+  semantic_memory_hits?: number;
+  [key: string]: unknown;
+};
+
 export type JudgeRequest = {
   contestants: string[];
   judge: string;
@@ -72,6 +110,32 @@ export type JudgeRequest = {
   semantic_min_score?: number;
   criteria?: string[];
   conversation_id?: string;
+};
+
+export type JudgeContestantResult = {
+  model: string;
+  latency_ms?: number;
+  status?: string;
+  [key: string]: unknown;
+};
+
+export type JudgeWinnerResponse = {
+  model: string;
+  content: string;
+  [key: string]: unknown;
+};
+
+export type JudgeResponse = {
+  id: string;
+  verdict: unknown;
+  winner_response: JudgeWinnerResponse;
+  contestants: JudgeContestantResult[];
+  credits_charged?: number;
+  credits_remaining?: number;
+  conversation_id?: string;
+  semantic_memory_used?: boolean;
+  semantic_memory_hits?: number;
+  [key: string]: unknown;
 };
 
 export type StreamEvent = {
@@ -130,4 +194,3 @@ export type ChatResponse = {
   optimization_goal?: OptimizationGoal;
   [key: string]: unknown;
 };
-
