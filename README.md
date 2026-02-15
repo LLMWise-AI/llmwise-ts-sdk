@@ -7,6 +7,8 @@ Lightweight TypeScript client for the LLMWise multi-model API:
 - Compare (run 2+ models in parallel)
 - Blend (synthesize answers from multiple models, supports MoA / Self-MoA)
 - Judge (model-vs-model evaluation)
+- Full API coverage for conversations, history, credits, usage, keys, memory,
+  optimization, and settings.
 
 No heavy dependencies. Works in Node 18+ and modern browsers.
 
@@ -68,8 +70,19 @@ for await (const ev of client.chatStream({
 }
 ```
 
+## Additional API Helpers
+
+- `conversations()`, `getConversation()`, `createConversation()`, `updateConversation()`, `deleteConversation()`
+- `history()`, `getHistoryDetail()`
+- `creditsWallet()`, `creditsTransactions()`, `creditsPacks()`, `creditsPurchase()`,
+  `creditsConfirmCheckout()`, `creditsAutoTopup()`, `creditsBalance()`
+- `usageSummary()`, `usageRecent()`
+- `keysInfo()`, `keysGenerate()`, `revokeApiKey()`
+- `memory()`, `memorySearch()`, `memoryDelete()`, `memoryClear()`
+- `optimization*` helpers, including policy/report/evaluate/replay/test suites/regression schedules
+- `settings*` helpers, including provider keys, privacy, and copilot state/ask endpoints
+
 ## Configure
 
 - Default base URL: `https://llmwise.ai/api/v1`
 - Override with: `new LLMWise({ apiKey, baseUrl })`
-
